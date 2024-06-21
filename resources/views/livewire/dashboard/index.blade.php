@@ -526,7 +526,7 @@
         <div class="container-fluid">
             <div class="row">
 
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <div class="panel panel-danger">
                         <div class="panel-heading">
                             <div class="panel-title">
@@ -575,25 +575,9 @@
 
                 <!-- /.col-md-8 -->
 
-                <div class="col-md-6">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                <h5>Gender Ratio</h5>
-                            </div>
-                        </div>
-                        <div class="panel-body p-20">
+              
 
-                            <div id="chart8" class="op-chart"></div>
-
-
-                            <!-- /.col-md-12 -->
-                        </div>
-                    </div>
-                    <!-- /.panel -->
-                </div>
-
-                {{-- <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="panel panel-danger">
                         <div class="panel-heading">
                             <div class="panel-title">
@@ -634,7 +618,52 @@
                         </div>
                         <!-- /.panel-body -->
                     </div>
-                </div> --}}
+                </div>
+                <!-- /.col-md-4 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <section class="section ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h5>Employee Labour Turnover</h5>
+                            </div>
+                        </div>
+                        <div class="panel-body p-20">
+
+                            <div id="chart12" class="op-chart"></div>
+
+      
+                            <!-- /.col-md-12 -->
+                        </div>
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+                <!-- /.col-md-8 -->
+
+                <div class="col-md-6">
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-title">
+                                <h5>Gender Ratio Chart</h5>
+                            </div>
+                        </div>
+                        <div class="panel-body p-20">
+
+                            <div id="chart4" class="op-chart"></div>
+                        </div>
+                    </div>
+                </div>
+
+     
                 <!-- /.col-md-4 -->
             </div>
             <!-- /.row -->
@@ -850,11 +879,118 @@
 <script src="{{asset('js/chartjs/utils.js')}}"></script>
 <script src="{{asset('js/chartjs/globalchartjs.js')}}"></script>
 
+
+
 <script>
+         var chart12 = AmCharts.makeChart("chart12", {
+                    "type": "serial",
+                    "theme": "light",
+                    "fontFamily": "Poppins",
+                    "marginTop":0,
+                    "marginRight": 80,
+                    "dataProvider": [{
+                        "year": "2021",
+                        "value": {{$resignation_2021}}
+                    }, {
+                        "year": "2022",
+                        "value": {{$resignation_2022}}
+                    }, 
+                    {
+                        "year": "2023",
+                        "value": {{$resignation_2023}}
+                    },
+                    {
+                        "year": "2024",
+                        "value": {{$resignation_2024}}
+                    }
+                ],
+                    "valueAxes": [{
+                        "axisAlpha": 0,
+                        "position": "left"
+                    }],
+                    "graphs": [{
+                        "id":"g1",
+                        "balloonText": "[[category]]<br><b><span style='font-size:14px;'>[[value]]</span></b>",
+                        "bullet": "round",
+                        "bulletSize": 8,
+                        "lineColor": "#d1655d",
+                        "lineThickness": 2,
+                        "negativeLineColor": "#637bb6",
+                        "type": "smoothedLine",
+                        "valueField": "value"
+                    }],
+                    "chartScrollbar": {
+                        "graph":"g1",
+                        "gridAlpha":0,
+                        "color":"#888888",
+                        "scrollbarHeight":55,
+                        "backgroundAlpha":0,
+                        "selectedBackgroundAlpha":0.1,
+                        "selectedBackgroundColor":"#888888",
+                        "graphFillAlpha":0,
+                        "autoGridCount":true,
+                        "selectedGraphFillAlpha":0,
+                        "graphLineAlpha":0.2,
+                        "graphLineColor":"#c2c2c2",
+                        "selectedGraphLineColor":"#888888",
+                        "selectedGraphLineAlpha":1
 
+                    },
+                    "chartCursor": {
+                        "categoryBalloonDateFormat": "YYYY",
+                        "cursorAlpha": 0,
+                        "valueLineEnabled":true,
+                        "valueLineBalloonEnabled":true,
+                        "valueLineAlpha":0.5,
+                        "fullWidth":true
+                    },
+                    "dataDateFormat": "YYYY",
+                    "categoryField": "year",
+                    "categoryAxis": {
+                        "minPeriod": "YYYY",
+                        "parseDates": true,
+                        "minorGridAlpha": 0.1,
+                        "minorGridEnabled": true
+                    },
+                    "export": {
+                        "enabled": true
+                    }
 
+                });
+                chart12.addListener("rendered", zoomChart);
+                if(chart12.zoomChart){
+                	chart12.zoomChart();
+                }
 
-       
+                function zoomChart(){
+                    chart12.zoomToIndexes(Math.round(chart12.dataProvider.length * 0.1), Math.round(chart12.dataProvider.length * 0.8));
+                }
+
+                 
+        
+
+var chart4 = AmCharts.makeChart( "chart4", {
+                  "type": "pie",
+                  "theme": "light",
+                  "fontFamily": "Poppins",
+                  "dataProvider": [ {
+                    "gender": "Male",
+                    "value": {{$males}}
+                  }, {
+                    "gender": "Female",
+                    "value": {{$females}}
+                  },  ],
+                  "valueField": "value",
+                  "titleField": "gender",
+                  "outlineAlpha": 0.4,
+                  "depth3D": 15,
+                  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                  "angle": 30,
+                  "export": {
+                    "enabled": true
+                  }
+                } );
+
 
 var chart = AmCharts.makeChart("total_trips", {
                   "type": "serial",
@@ -943,28 +1079,7 @@ var chart = AmCharts.makeChart("total_trips", {
 
    var chartData = {
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug","Sep","Oct","Nov","Dec"],
-            datasets: [{
-                type: 'line',
-                label: 'Kilometers',
-                borderColor: window.chartColors.blue,
-                borderWidth: 2,
-                fill: false,
-                data: [
-                    {{$jan_distance}}, 
-                    {{$feb_distance}}, 
-                    {{$mar_distance}}, 
-                    {{$apr_distance}}, 
-                    {{$may_distance}}, 
-                    {{$jun_distance}}, 
-                    {{$jul_distance}}, 
-                    {{$aug_distance}}, 
-                    {{$sept_distance}}, 
-                    {{$oct_distance}}, 
-                    {{$nov_distance}}, 
-                    {{$dec_distance}}, 
-                    
-                ]
-            }, {
+            datasets: [ {
                 type: 'bar',
                 label: 'Litres',
                 backgroundColor: window.chartColors.red,
@@ -1002,7 +1117,30 @@ var chart = AmCharts.makeChart("total_trips", {
                     {{$nov_weight}}, 
                     {{$dec_weight}}, 
                 ]
-            }]
+            },
+            {
+                type: 'line',
+                label: 'Kilometers',
+                borderColor: window.chartColors.blue,
+                borderWidth: 2,
+                fill: false,
+                data: [
+                    {{$jan_distance}}, 
+                    {{$feb_distance}}, 
+                    {{$mar_distance}}, 
+                    {{$apr_distance}}, 
+                    {{$may_distance}}, 
+                    {{$jun_distance}}, 
+                    {{$jul_distance}}, 
+                    {{$aug_distance}}, 
+                    {{$sept_distance}}, 
+                    {{$oct_distance}}, 
+                    {{$nov_distance}}, 
+                    {{$dec_distance}}, 
+                    
+                ]
+            }
+        ]
 
         };
         window.onload = function() {
@@ -1034,8 +1172,11 @@ var chart = AmCharts.makeChart("total_trips", {
         });
 
       
+        
 
 </script>
+
+
 
 <script>
       $(function($) {

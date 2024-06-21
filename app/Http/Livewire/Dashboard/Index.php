@@ -226,6 +226,16 @@ class Index extends Component
         ->where('ending_mileage', '!=', "")
         ->sum(DB::raw('ending_mileage - starting_mileage'));
 
+        $male = "Male";
+        $female = "Female";
+
+        $this->resignation_2021 = Employee::whereYear('end_date', '2021')->get()->count();
+        $this->resignation_2022 = Employee::whereYear('end_date', '2022')->get()->count();
+        $this->resignation_2023 = Employee::whereYear('end_date', '2023')->get()->count();
+        $this->resignation_2024 = Employee::whereYear('end_date', '2024')->get()->count();
+
+        $this->males = Employee::where('status',1)->where('gender', 'LIKE', '%'.$male.'%')->get()->count();
+        $this->females = Employee::where('status',1)->where('gender', 'LIKE', '%'.$female.'%')->get()->count();
 
         $this->jan_sales = Trip::whereYear('created_at', date('Y'))
         ->whereMonth('created_at', 1)->where('freight',"!=",Null)->where('freight',"!=","")->sum('freight');
